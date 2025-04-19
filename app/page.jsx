@@ -42,7 +42,8 @@ const UsersPage = () => {
 
   return (
     <div className="w-full flex flex-col items-center justify-center min-h-screen bg-gray-900 p-4">
-      <div className="w-full max-w-4xl">
+      <h1 className='text-center font-bold text-5xl text-white mb-10'>Crud Next Js/Php</h1>
+      <div className="w-full max-w-4xl bg-gray-400 p-8 rounded-lg">
         <div className="flex justify-between items-center mb-6">
           <h1 className="text-2xl font-bold text-gray-100">User Management</h1>
           <Button 
