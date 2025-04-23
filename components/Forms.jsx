@@ -1,14 +1,30 @@
 'use client';
 
 import Button from "./Buttons";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
-const UserForm = ({ user, onSubmit, onCancel }) => {
+const UserForm = ({ user, onSubmit, onCancel, isLoading, error }) => {
   const [formData, setFormData] = useState({
-    firstname: user?.firstname || '',
-    lastname: user?.lastname || '',
-    email: user?.email || '',
+    first_name: '',
+    last_name: '',
+    email: '',
   });
+
+  useEffect(() => {
+    if(user) {
+      setFormData({
+        first_name: user.first_name || '',
+        last_name: user.last_name || '',
+        email: user.email || '',
+      });
+    }else {
+      setFormData({
+        first_name: '',
+        last_name: '',
+        email: '',
+      });
+    }
+  }, [user])
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -26,15 +42,22 @@ const UserForm = ({ user, onSubmit, onCancel }) => {
         {user ? 'Edit User' : 'Add New User'}
       </h2>
 
+      {error && (
+        <div className="p-2 bg-red-100 text-red-700 rounded-md text-sm">
+          {error}
+        </div>
+      )}
+
       <div className="space-y-2">
         <label className="block text-sm font-medium text-gray-700">First Name</label>
         <input
           type="text"
-          name="firstname"
-          value={formData.firstname}
+          name="first_name"
+          value={formData.first_name}
           onChange={handleChange}
           className="w-full p-2 border rounded-md"
           required
+          disabled={isLoading}
         />
       </div>
 
@@ -42,11 +65,12 @@ const UserForm = ({ user, onSubmit, onCancel }) => {
         <label className="block text-sm font-medium text-gray-700">Last Name</label>
         <input
           type="text"
-          name="lastname"
-          value={formData.lastname}
+          name="last_name"
+          value={formData.last_name}
           onChange={handleChange}
           className="w-full p-2 border rounded-md"
           required
+          disabled={isLoading}
         />
       </div>
 
@@ -59,15 +83,16 @@ const UserForm = ({ user, onSubmit, onCancel }) => {
           onChange={handleChange}
           className="w-full p-2 border rounded-md"
           required
+          disabled={isLoading}
         />
       </div>
 
       <div className="flex justify-end space-x-2 pt-4">
-        <Button type="button" variant="secondary" onClick={onCancel}>
+        <Button type="button" variant="secondary" onClick={onCancel}  disabled={isLoading}>
           Cancel
         </Button>
-        <Button type="submit" variant="primary">
-          {user ? 'Update' : 'Save'}
+        <Button type="submit" variant="primary"  disabled={isLoading}>
+        {isLoading ? 'Processing...' : (user ? 'Update' : 'Save')}
         </Button>
       </div>
     </form>
