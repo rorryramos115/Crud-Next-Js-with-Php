@@ -5,7 +5,7 @@ import UserForm from '@/components/Forms';
 import Table from '@/components/Table';
 import Button from '@/components/Buttons';
 import Modal from '@/components/Modal';
-import { getUsers, addUser } from '@/lib/api';
+import { getUsers, addUser, updateUser } from '@/lib/api';
 
 const UsersPage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -42,10 +42,15 @@ const UsersPage = () => {
     try {
       setIsLoading(true);
       if (currentUser) {
-        // Update existing user
-        setUsers(users.map(user => 
-          user.id === currentUser.id ? { ...user, ...userData } : user
-        ));
+        const updateData = { ...userData, user_id: currentUser.user_id };
+        updateUser(updateData);
+        
+        // this method comented is get data or update in real time, if you want to add this kind of method
+        // you need to implement the real time database or backend or use Polling method, 
+        // !!note Polling method is not recommended in medium to large project
+        // setUsers(users.map(user => 
+        //   user.user_id === currentUser.user_id ? updatedUser : user
+        // ));
       } else {
         addUser(userData);
         // this method comented is get data or update in real time, if you want to add this kind of method
