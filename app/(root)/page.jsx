@@ -5,7 +5,7 @@ import UserForm from '@/components/Forms';
 import Table from '@/components/Table';
 import Button from '@/components/Buttons';
 import Modal from '@/components/Modal';
-import { getUsers, addUser, updateUser } from '@/lib/api';
+import { getUsers, addUser, updateUser, deleteUser } from '@/lib/api';
 
 const UsersPage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -36,6 +36,7 @@ const UsersPage = () => {
   const handleCloseModal = () => {
     setCurrentUser(null);
     setIsModalOpen(false);
+    setError(null)
   };
 
   const handleSubmit = async (userData) => {
@@ -67,8 +68,16 @@ const UsersPage = () => {
     }
   };
 
-  const handleDelete = (userId) => {
-    setUsers(users.filter(user => user.id !== userId));
+  const handleDelete = async (userId) => {
+    try {
+      setIsLoading(true);
+      await deleteUser(userId);
+      setUsers(users.filter(user => user.user_id !== userId));
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   if (isLoading && users.length === 0) {

@@ -37,7 +37,7 @@ const Table = ({ users, onEdit, onDelete, isLoading}) => {
                   <Button 
                     size="sm" 
                     variant="danger" 
-                    onClick={() => onDelete(user.id)}
+                    onClick={() => onDelete(user.user_id)}
                     disabled={isLoading}
                   >
                     Delete
